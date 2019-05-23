@@ -1,0 +1,27 @@
+grammar org.xtext.example.scoping2.Scoping2 with org.eclipse.xtext.common.Terminals
+
+generate scoping2 "http://www.xtext.org/example/scoping2/Scoping2"
+
+Book:
+	'book'
+	name=QualifiedName
+	(imports+=DImport)*
+	(chapters+=Chapter)*;
+
+DImport:
+	'import' importedNamespace=QualifiedNameWithWildcard;
+
+QualifiedNameWithWildcard: 
+	QualifiedName '.*'?;
+
+QualifiedName:
+	ID ('.' ID)*;
+	
+Chapter:
+	'chapter' name=ID '{' (paragraphs+=Paragraph | references+=Reference)*	'}';
+	
+Paragraph:
+	text=STRING;
+	
+Reference:
+	'ref' ref=[Chapter|ID];
